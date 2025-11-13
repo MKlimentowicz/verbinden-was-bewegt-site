@@ -14,6 +14,14 @@ Project Goals
 * Social: Open Graph and Twitter cards.
 * Testability: provide simple manual test steps and lightweight automated checks (lint rules).
 
+Font Family
+* Use preferred Open Sans
+* Fallback: system-ui, sans-serif
+* Embed via Google Fonts: 
+    - <link rel="preconnect" href="https://fonts.googleapis.com">
+    - <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    - <link href="https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&display=swap" rel="stylesheet">
+
 Conventions & Style
 * HTML: semantic tags (header, main, nav, footer, section, article, figure). Include SEO/social meta in `<head>`.
 * CSS: modular single stylesheet or small split files. Mobile-first. Use BEM-like class naming: block__element--modifier. CSS variables for theming.

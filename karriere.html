@@ -575,7 +575,15 @@
                 <div class="success-message" id="successMessage">
                     ✓ Vielen Dank für deine Bewerbung! Wir melden uns schnellstmöglich bei dir.
                 </div>
-                <form id="applicationForm" aria-label="Bewerbungsformular">
+                <form id="applicationForm" aria-label="Bewerbungsformular" action="https://api.staticforms.xyz/submit" method="POST">
+                    <!-- StaticForms required/optional fields -->
+                    <input type="hidden" name="accessKey" value="sf_m1a2bh3f60ifl2d67kbjl40g">
+                    <input type="hidden" name="subject" value="Neue Bewerbung – Verbinden was bewegt">
+                    <input type="hidden" name="replyTo" value="@">
+                    <!-- Set to your live URL, e.g. https://verbinden-was-bewegt.de/karriere_success.html -->
+                    <input type="hidden" name="redirectTo" value="https://verbinden-was-bewegt.de/karriere_success.html">
+                    <input type="text" name="honeypot" tabindex="-1" autocomplete="off" style="display:none">
+
                     <div class="form-group">
                         <label for="name">Name *</label>
                         <input type="text" id="name" name="name" required aria-required="true">
@@ -619,7 +627,7 @@
                     <div class="form-group">
                         <div class="checkbox-group">
                             <input type="checkbox" id="privacy" name="privacy" required aria-required="true">
-                            <label for="privacy">Ich akzeptiere die Datenschutzbestimmungen *</label>
+                            <label for="privacy">Ich akzeptiere die <a href="datenschutz.html">Datenschutzbestimmungen</a> *</label>
                         </div>
                     </div>
                     <button type="submit" class="submit-btn" aria-label="Bewerbung absenden">Jetzt bewerben</button>
@@ -677,36 +685,17 @@
         const form = document.getElementById('applicationForm');
         const successMessage = document.getElementById('successMessage');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            
-            // Form validation
-            if (!form.checkValidity()) {
-                form.reportValidity();
-                return;
-            }
-
-            // Simulate form submission
-            const submitBtn = form.querySelector('.submit-btn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = 'Wird gesendet...';
-
-            // Simulate API call
-            setTimeout(() => {
+        // Removed custom submit interception to allow native POST to StaticForms
+        // Show success message when redirected back with ?success=1 or #success
+        try {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('success') === '1' || window.location.hash === '#success') {
                 successMessage.classList.add('show');
-                form.reset();
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Jetzt bewerben';
-                
-                // Scroll to success message
-                successMessage.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-                // Hide message after 5 seconds
-                setTimeout(() => {
-                    successMessage.classList.remove('show');
-                }, 5000);
-            }, 1500);
-        });
+                setTimeout(() => successMessage.classList.remove('show'), 5000);
+            }
+        } catch (_) {
+            /* no-op */
+        }
 
         // Form field enhancements
         const inputs = form.querySelectorAll('input, textarea, select');
@@ -714,7 +703,6 @@
             input.addEventListener('invalid', function() {
                 this.classList.add('error');
             });
-            
             input.addEventListener('input', function() {
                 this.classList.remove('error');
             });

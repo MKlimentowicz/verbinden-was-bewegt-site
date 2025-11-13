@@ -1,0 +1,4 @@
+# robots.txt — Verhindert das Crawlen und Indexieren der gesamten Website
+# "unsichtbar machen" für Suchmaschinen / alle Bots
+User-agent: *
+Disallow: /
